@@ -1,0 +1,6 @@
+Pillow
+beautifulsoup4
+html5lib
+matplotlib
+scipy
+tensorlayer

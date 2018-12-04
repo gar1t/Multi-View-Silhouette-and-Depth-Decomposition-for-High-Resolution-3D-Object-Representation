@@ -1,0 +1,48 @@
+- model: data
+  description: Data support
+  operations:
+    prepare-all:
+      description: Prepare all data for training
+      main: data_prep
+      requires:
+        - file-locations
+    prepare-sample:
+      description: Prepare small sample for training
+      main: data_prep -o plane -no 10 -hi 128 -l 64 -ni 5
+      requires:
+        - file-locations
+
+  resources:
+    file-locations:
+      path: scripts
+      sources:
+        - scripts/binvox_file_locations.txt
+
+- config: scripts-support
+  resources:
+  resources:
+    scripts:
+      sources:
+        - scripts/utils.py
+        - scripts/voxel.py
+        - scripts/models.py
+
+- model: depth
+  description: Depth map prediction network
+  extends: scripts-support
+  operations:
+    train:
+      description: Train depth map prediction network
+      main: depth
+      requires:
+        - scripts
+
+- model: occupancy
+  description: Occupancy map prediction
+  extends: scripts-support
+  operations:
+    train:
+      description: Train occupancy map prediction
+      main: occupancy
+      requires:
+        - scripts
